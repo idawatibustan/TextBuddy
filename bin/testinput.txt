@@ -1,0 +1,12 @@
+display
+add programming
+display
+clear
+add meeting
+add tutorial
+display
+add gym
+display
+delete 2
+display
+exit

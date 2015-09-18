@@ -1,0 +1,28 @@
+Welcome to TextBuddy. mytextfile.txt is ready for use
+command: 
+mytextfile.txt is empty
+command: 
+added to mytextfile.txt: "programming"
+command: 
+1. programming
+command: 
+all content deleted from mytextfile.txt
+command: 
+added to mytextfile.txt: "meeting"
+command: 
+added to mytextfile.txt: "tutorial"
+command: 
+1. meeting
+2. tutorial
+command: 
+added to mytextfile.txt: "gym"
+command: 
+1. meeting
+2. tutorial
+3. gym
+command: 
+deleted from mytextfile.txt: "tutorial"
+command: 
+1. meeting
+2. gym
+command: 

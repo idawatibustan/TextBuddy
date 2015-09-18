@@ -1,0 +1,28 @@
+Welcome to TextBuddy. mytextfile.txt is ready for use
+command: 
+added to mytextfile.txt: "little brown fox"
+command: 
+1. amazing
+2. not really
+3. Busy day
+4. little brown fox
+command: 
+added to mytextfile.txt: "jumped over the moon"
+command: 
+1. amazing
+2. not really
+3. Busy day
+4. little brown fox
+5. jumped over the moon
+command: 
+deleted from mytextfile.txt: "not really"
+command: 
+1. amazing
+2. Busy day
+3. little brown fox
+4. jumped over the moon
+command: 
+all content deleted from mytextfile.txt
+command: 
+mytextfile.txt is empty
+command: 
