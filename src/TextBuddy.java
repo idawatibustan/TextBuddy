@@ -79,24 +79,24 @@ public class TextBuddy{
 		System.out.println(msg);
 	}
 
-	//execute relevant command
+	//textbuddy instance - execute relevant command
 	public void executeCommand(String commandLine) throws IOException{
 		Command cmd = new Command(getFirstWord(commandLine), removeFirstWord(commandLine));
 		switch(cmd.type){
 		case "add":
-			doAdd(cmd.detail); break;
-//		case "display":
+			this.doAdd(cmd.detail); this.numEntry++; break;
+		case "display":
+			if(this.numEntry == 0){toUser(this.fileName + MESSAGE_EMPTY);}
 //			int count = doDisplay(tb1.file); 
-//			if(count == 0){toUser(tb1.fileName + MESSAGE_EMPTY);} break;
+			break;
 //		case "delete":			
 //			String content = doDelete(Integer.valueOf(removeFirstWord(commandLine)), tb1.file); 
 //			toUser(MESSAGE_DELETE + tb1.fileName + ": \"" + content + "\""); break;
 //		case "clear":
 //			doClear(tb1.file); toUser(MESSAGE_CLEAR + tb1.fileName); break;
-//		case "exit":
-//			System.exit(0);
-//		default: toUser("Command Error!");
-		//TODO
+		case "exit":
+			System.exit(0);
+		default: toUser("Command Error!");
 		}
 	}
 	
@@ -120,16 +120,13 @@ public class TextBuddy{
 	}
 	
 	//execute command: display
-	public static int doDisplay(File file) throws IOException{
-		BufferedReader br = new BufferedReader(new FileReader(file));
+	public void doDisplay() throws IOException{
 		int count = 0;
-		
-		for(String line=br.readLine(); line!= null; line=br.readLine()){
-			toUser(++count + ". " + line);
+		BufferedReader br = new BufferedReader(new FileReader(this.file));
+		while(count < this.numEntry){
+			toUser(++count + ". " + br.readLine());
 		}
 		br.close();
-		
-		return count;
 	}
 	
 	//execute command: delete
