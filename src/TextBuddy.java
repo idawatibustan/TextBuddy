@@ -5,17 +5,16 @@ import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-public class Command{
+class Command{
 	public String type;
 	public String detail;
 	
+	//constructor
 	public Command(String type, String detail){
 		this.type = type;
 		this.detail = detail;
-	}
-	
+	}	
 }
-
 
 public class TextBuddy{
 	//attributes
@@ -54,7 +53,7 @@ public class TextBuddy{
 		
 		while(true){
 			toUser(MESSAGE_COMMAND);
-			executeCommand(sc.nextLine(), tb);
+			tb.executeCommand(sc.nextLine());
 //			String commandLine = sc.nextLine();
 //			switch(getFirstWord(commandLine)){
 //			case "add":
@@ -81,11 +80,11 @@ public class TextBuddy{
 	}
 
 	//execute relevant command
-	public static void executeCommand(String commandLine, TextBuddy tb) throws IOException{
+	public void executeCommand(String commandLine) throws IOException{
 		Command cmd = new Command(getFirstWord(commandLine), removeFirstWord(commandLine));
 		switch(cmd.type){
 		case "add":
-			doAdd(cmd.detail, tb); break;
+			doAdd(cmd.detail); break;
 //		case "display":
 //			int count = doDisplay(tb1.file); 
 //			if(count == 0){toUser(tb1.fileName + MESSAGE_EMPTY);} break;
@@ -112,12 +111,12 @@ public class TextBuddy{
 	}
 	
 	//execute command: add
-	public static void doAdd(String content, TextBuddy tb) throws IOException{
-		FileWriter fw = new FileWriter(tb.file, true);
+	public void doAdd(String content) throws IOException{
+		FileWriter fw = new FileWriter(this.file, true);
 		fw.write(content);
 		fw.write(System.lineSeparator());
 		fw.close();
-		toUser("added to " + tb.fileName + ": \"" + content + "\"");
+		toUser("added to " + this.fileName + ": \"" + content + "\"");
 	}
 	
 	//execute command: display
@@ -184,4 +183,5 @@ public class TextBuddy{
 		fwo.write("");
 		fwo.close();
 	}
+
 }
