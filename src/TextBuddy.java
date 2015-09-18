@@ -15,10 +15,18 @@ public class TextBuddy{
 	public TextBuddy(String name){
 		this.fileName = name;
 		this.file = new File(name);
+		try{
+			if(!file.exists()){
+				file.createNewFile(); //create if file not exist
+			}
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+		
 		this.numEntry = 0;
 	};
 	
-	//constants
+	//messages constants
 	public static final String MESSAGE_WELCOME = "Welcome to TextBuddy. ";
 	public static final String MESSAGE_FILE_READY= " is ready for use";
 	public static final String MESSAGE_COMMAND = "command: \n";
@@ -30,37 +38,25 @@ public class TextBuddy{
 	private static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws IOException{
-		String fileName = args[0];
+		TextBuddy tb1 = new TextBuddy(args[0]);
 		
-		//create file
-		File file = new File(fileName);
-		try{
-			//if file doesnt exists, create file
-			if(!file.exists()){
-				file.createNewFile();
-			}
-		} catch (IOException e){
-			e.printStackTrace();
-		}
-		//create file end
-		
-		toUser(MESSAGE_WELCOME + fileName + MESSAGE_FILE_READY);
+		toUser(MESSAGE_WELCOME + tb1.fileName + MESSAGE_FILE_READY);
 		
 		while(true){ 
 			System.out.print(MESSAGE_COMMAND);
 			String commandLine = sc.nextLine();
 			switch(getFirstWord(commandLine)){
 			case "add":
-				doAdd(removeFirstWord(commandLine), file, fileName); break;
+				doAdd(removeFirstWord(commandLine), tb1.file, tb1.fileName); break;
 			case "display":
-				int count = doDisplay(file); 
-				if(count == 0){toUser(fileName + MESSAGE_EMPTY);} break;
+				int count = doDisplay(tb1.file); 
+				if(count == 0){toUser(tb1.fileName + MESSAGE_EMPTY);} break;
 			case "delete":
 				
-				String content = doDelete(Integer.valueOf(removeFirstWord(commandLine)), file); 
-				toUser(MESSAGE_DELETE + fileName + ": \"" + content + "\""); break;
+				String content = doDelete(Integer.valueOf(removeFirstWord(commandLine)), tb1.file); 
+				toUser(MESSAGE_DELETE + tb1.fileName + ": \"" + content + "\""); break;
 			case "clear":
-				doClear(file); toUser(MESSAGE_CLEAR + fileName); break;
+				doClear(tb1.file); toUser(MESSAGE_CLEAR + tb1.fileName); break;
 			case "exit":
 				System.exit(0);
 			default: toUser("Command Error!");
