@@ -54,6 +54,7 @@ public class TextBuddy{
 		while(true){
 			toUser(MESSAGE_COMMAND);
 			tb.executeCommand(sc.nextLine());
+		}
 //			String commandLine = sc.nextLine();
 //			switch(getFirstWord(commandLine)){
 //			case "add":
@@ -71,7 +72,6 @@ public class TextBuddy{
 //				System.exit(0);
 //			default: toUser("Command Error!");
 //			}
-		}
 	}
 	
 	//print to user
@@ -87,13 +87,13 @@ public class TextBuddy{
 			this.doAdd(cmd.detail); this.numEntry++; break;
 		case "display":
 			if(this.numEntry == 0){toUser(this.fileName + MESSAGE_EMPTY);}
-//			int count = doDisplay(tb1.file); 
+			this.doDisplay();
 			break;
+		case "clear":
+			this.doClear(); this.numEntry = 0; break;
 //		case "delete":			
 //			String content = doDelete(Integer.valueOf(removeFirstWord(commandLine)), tb1.file); 
 //			toUser(MESSAGE_DELETE + tb1.fileName + ": \"" + content + "\""); break;
-//		case "clear":
-//			doClear(tb1.file); toUser(MESSAGE_CLEAR + tb1.fileName); break;
 		case "exit":
 			System.exit(0);
 		default: toUser("Command Error!");
@@ -123,10 +123,19 @@ public class TextBuddy{
 	public void doDisplay() throws IOException{
 		int count = 0;
 		BufferedReader br = new BufferedReader(new FileReader(this.file));
-		while(count < this.numEntry){
-			toUser(++count + ". " + br.readLine());
+		while(count != this.numEntry){
+			String line = new String(br.readLine());
+			toUser(++count + ". " + line);
 		}
 		br.close();
+	}
+	
+	//execute command: clear
+	public void doClear() throws IOException{
+		FileWriter fw = new FileWriter(this.file, false);
+		fw.write("");
+		fw.close();
+		toUser(MESSAGE_CLEAR + this.fileName);
 	}
 	
 	//execute command: delete
@@ -172,13 +181,6 @@ public class TextBuddy{
 		}
 		
 		return content;
-	}
-
-	//execute command: clear
-	public static void doClear(File file) throws IOException{
-		FileWriter fwo = new FileWriter(file, false);
-		fwo.write("");
-		fwo.close();
 	}
 
 }
