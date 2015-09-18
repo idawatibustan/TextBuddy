@@ -20,7 +20,7 @@ public class TextBuddy{
 		String fileName = args[0];
 		
 		//create file
-		File file = new File("/users/idawatibustan/desktop/" + fileName);
+		File file = new File(fileName);
 		try{
 			//if file doesnt exists, create file
 			if(!file.exists()){
@@ -88,7 +88,7 @@ public class TextBuddy{
 	}
 	
 	public static String doDelete(Integer line, File file) throws IOException{
-		File temp = new File("/users/idawatibustan/desktop/temp.txt");
+		File temp = new File("temp.txt");
 		try{
 			//if file doesnt exists, create file
 			if(!temp.exists()){
