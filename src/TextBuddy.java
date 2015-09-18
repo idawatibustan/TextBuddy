@@ -91,7 +91,9 @@ public class TextBuddy{
 			break;
 		case "clear":
 			this.doClear(); this.numEntry = 0; break;
-//		case "delete":			
+		case "delete":
+			this.doDelete(Integer.valueOf(cmd.detail)); this.numEntry--; break;
+
 //			String content = doDelete(Integer.valueOf(removeFirstWord(commandLine)), tb1.file); 
 //			toUser(MESSAGE_DELETE + tb1.fileName + ": \"" + content + "\""); break;
 		case "exit":
@@ -139,10 +141,9 @@ public class TextBuddy{
 	}
 	
 	//execute command: delete
-	public static String doDelete(Integer line, File file) throws IOException{
+	public String doDelete(Integer lineNum) throws IOException{
 		File temp = new File("temp.txt");
 		try{
-			//if file doesnt exists, create file
 			if(!temp.exists()){
 				temp.createNewFile();
 			}
@@ -150,7 +151,7 @@ public class TextBuddy{
 			e.printStackTrace();
 		}
 		
-		BufferedReader br = new BufferedReader(new FileReader(file));
+		BufferedReader br = new BufferedReader(new FileReader(this.file));
 		FileWriter fw = new FileWriter(temp, true);
 		
 		String content = new String();
@@ -161,7 +162,7 @@ public class TextBuddy{
 			if(tempContent == null){
 				break;
 			}
-			if(count != line && tempContent != null){
+			if(count != lineNum && tempContent != null){
 				fw.write(tempContent);
 				fw.write(System.lineSeparator());
 			} else {
