@@ -6,6 +6,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 
 public class TextBuddy{
+	//attributes
+	public String fileName;
+	public File file;
+	public int numEntry;
+	
+	//constructor
+	public TextBuddy(String name){
+		this.fileName = name;
+		this.file = new File(name);
+		this.numEntry = 0;
+	};
+	
+	//constants
 	public static final String MESSAGE_WELCOME = "Welcome to TextBuddy. ";
 	public static final String MESSAGE_FILE_READY= " is ready for use";
 	public static final String MESSAGE_COMMAND = "command: \n";
