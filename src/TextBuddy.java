@@ -49,29 +49,13 @@ public class TextBuddy{
 	
 	public static void main(String[] args) throws IOException {
 		TextBuddy tb = new TextBuddy(args[0]);
+		tb.executeCommand("clear");
 		toUser(MESSAGE_WELCOME + tb.fileName + MESSAGE_FILE_READY);
 		
 		while(true){
 			toUser(MESSAGE_COMMAND);
 			tb.executeCommand(sc.nextLine());
 		}
-//			String commandLine = sc.nextLine();
-//			switch(getFirstWord(commandLine)){
-//			case "add":
-//				doAdd(removeFirstWord(commandLine), tb1.file, tb1.fileName); break;
-//			case "display":
-//				int count = doDisplay(tb1.file); 
-//				if(count == 0){toUser(tb1.fileName + MESSAGE_EMPTY);} break;
-//			case "delete":
-//				
-//				String content = doDelete(Integer.valueOf(removeFirstWord(commandLine)), tb1.file); 
-//				toUser(MESSAGE_DELETE + tb1.fileName + ": \"" + content + "\""); break;
-//			case "clear":
-//				doClear(tb1.file); toUser(MESSAGE_CLEAR + tb1.fileName); break;
-//			case "exit":
-//				System.exit(0);
-//			default: toUser("Command Error!");
-//			}
 	}
 	
 	//print to user
@@ -93,9 +77,6 @@ public class TextBuddy{
 			this.doClear(); this.numEntry = 0; break;
 		case "delete":
 			this.doDelete(Integer.valueOf(cmd.detail)); this.numEntry--; break;
-
-//			String content = doDelete(Integer.valueOf(removeFirstWord(commandLine)), tb1.file); 
-//			toUser(MESSAGE_DELETE + tb1.fileName + ": \"" + content + "\""); break;
 		case "exit":
 			System.exit(0);
 		default: toUser("Command Error!");
@@ -157,30 +138,26 @@ public class TextBuddy{
 		String content = new String();
 		String tempContent = new String();
 		int count = 1;
-		while(true){
+		while(count != this.numEntry){
 			tempContent = br.readLine();
-			if(tempContent == null){
-				break;
-			}
-			if(count != lineNum && tempContent != null){
+			if(count != lineNum){
 				fw.write(tempContent);
 				fw.write(System.lineSeparator());
-			} else {
-				content = tempContent;
 			}
 			count++;
 		}		
 		br.close();
 		fw.close();
 
-		if(!file.delete()){
-			toUser("Could not delete file");
+		//delete current file
+		if(!this.file.delete()){
+			toUser("Could not delete existing file");
 		}
 		
-		if(!temp.renameTo(file)){
-			toUser("Could not rename file");
-		}
-		
+		//change temp to current file
+		if(!temp.renameTo(this.file)){
+			toUser("Could not rename temp file");
+		}	
 		return content;
 	}
 
