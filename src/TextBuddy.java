@@ -13,7 +13,7 @@ class Command{
 	public Command(String type, String detail){
 		this.type = type;
 		this.detail = detail;
-	}	
+	}
 }
 
 public class TextBuddy{
@@ -41,25 +41,26 @@ public class TextBuddy{
 	public static final String MESSAGE_FILE_READY= " is ready for use";
 	public static final String MESSAGE_COMMAND = "command: ";
 	public static final String MESSAGE_ADD = "added to ";
-	public static final String MESSAGE_DELETE = "deleted from ";
+	public static final String MESSAGE_DELETE = " deleted from ";
 	public static final String MESSAGE_CLEAR = "all content deleted from ";
 	public static final String MESSAGE_EMPTY = " is empty";
 	
+	//scanner
 	private static Scanner sc = new Scanner(System.in);
 	
 	public static void main(String[] args) throws IOException {
 		TextBuddy tb = new TextBuddy(args[0]);
 		tb.executeCommand("clear");
-		toUser(MESSAGE_WELCOME + tb.fileName + MESSAGE_FILE_READY);
+		displayMsg(MESSAGE_WELCOME + tb.fileName + MESSAGE_FILE_READY);
 		
 		while(true){
-			toUser(MESSAGE_COMMAND);
+			displayMsg(MESSAGE_COMMAND);
 			tb.executeCommand(sc.nextLine());
 		}
 	}
 	
 	//print to user
-	public static void toUser(String msg){
+	public static void displayMsg(String msg){
 		System.out.println(msg);
 	}
 
@@ -68,18 +69,22 @@ public class TextBuddy{
 		Command cmd = new Command(getFirstWord(commandLine), removeFirstWord(commandLine));
 		switch(cmd.type){
 		case "add":
-			this.doAdd(cmd.detail); this.numEntry++; break;
+			this.addItem(cmd.detail); this.numEntry++; break;
 		case "display":
-			if(this.numEntry == 0){toUser(this.fileName + MESSAGE_EMPTY);}
-			this.doDisplay();
+			if(this.numEntry == 0){displayMsg(this.fileName + MESSAGE_EMPTY);}
+			this.displayList();
 			break;
 		case "clear":
-			this.doClear(); this.numEntry = 0; break;
+			this.clearList(); this.numEntry = 0; break;
 		case "delete":
-			this.doDelete(Integer.valueOf(cmd.detail)); this.numEntry--; break;
+			this.deleteItem(Integer.valueOf(cmd.detail)); this.numEntry--; break;
+		case "sort":
+			this.sortList(); break;
+		case "search":
+			this.searchItem(cmd.detail); break;
 		case "exit":
 			System.exit(0);
-		default: toUser("Command Error!");
+		default: displayMsg("Command Error!");
 		}
 	}
 	
@@ -88,41 +93,41 @@ public class TextBuddy{
 		return string.trim().split("\\s+")[0];
 	}
 	
-	//remove first word: command word
+	//remove first word to get command details
 	public static String removeFirstWord(String string){
 		return string.replace(getFirstWord(string),"").trim();
 	}
 	
 	//execute command: add
-	public void doAdd(String content) throws IOException{
+	public void addItem(String content) throws IOException{
 		FileWriter fw = new FileWriter(this.file, true);
 		fw.write(content);
 		fw.write(System.lineSeparator());
 		fw.close();
-		toUser("added to " + this.fileName + ": \"" + content + "\"");
+		displayMsg("added to " + this.fileName + ": \"" + content + "\"");
 	}
 	
-	//execute command: display
-	public void doDisplay() throws IOException{
+	//execute command: display numbered list of items
+	public void displayList() throws IOException{
 		int count = 0;
 		BufferedReader br = new BufferedReader(new FileReader(this.file));
 		while(count != this.numEntry){
 			String line = new String(br.readLine());
-			toUser(++count + ". " + line);
+			displayMsg(++count + ". " + line);
 		}
 		br.close();
 	}
 	
-	//execute command: clear
-	public void doClear() throws IOException{
+	//execute command: clear all items in the list
+	public void clearList() throws IOException{
 		FileWriter fw = new FileWriter(this.file, false);
 		fw.write("");
 		fw.close();
-		toUser(MESSAGE_CLEAR + this.fileName);
+		displayMsg(MESSAGE_CLEAR + this.fileName);
 	}
 	
 	//execute command: delete
-	public String doDelete(Integer lineNum) throws IOException{
+	public void deleteItem(Integer lineNum) throws IOException{
 		File temp = new File("temp.txt");
 		try{
 			if(!temp.exists()){
@@ -138,11 +143,13 @@ public class TextBuddy{
 		String content = new String();
 		String tempContent = new String();
 		int count = 1;
-		while(count != this.numEntry){
+		while(count <= this.numEntry){
 			tempContent = br.readLine();
 			if(count != lineNum){
 				fw.write(tempContent);
 				fw.write(System.lineSeparator());
+			} else {
+				content = tempContent;
 			}
 			count++;
 		}		
@@ -151,14 +158,21 @@ public class TextBuddy{
 
 		//delete current file
 		if(!this.file.delete()){
-			toUser("Could not delete existing file");
+			displayMsg("Could not delete existing file");
 		}
 		
 		//change temp to current file
 		if(!temp.renameTo(this.file)){
-			toUser("Could not rename temp file");
+			displayMsg("Could not rename temp file");
 		}	
-		return content;
+		displayMsg(content + MESSAGE_DELETE + this.fileName);
 	}
 
+	public void sortList(){
+		//TODO
+	}
+
+	public void searchItem(String key){
+		//TODO
+	}
 }
