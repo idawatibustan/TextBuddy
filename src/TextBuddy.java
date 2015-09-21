@@ -44,6 +44,7 @@ public class TextBuddy{
 	public static final String MESSAGE_DELETE = " deleted from ";
 	public static final String MESSAGE_CLEAR = "all content deleted from ";
 	public static final String MESSAGE_EMPTY = " is empty";
+	public static final String MESSAGE_ERROR = "Command Error!";
 	
 	//scanner
 	private static Scanner sc = new Scanner(System.in);
@@ -64,7 +65,18 @@ public class TextBuddy{
 		System.out.println(msg);
 	}
 
-	//textbuddy instance - execute relevant command
+	//get first word: command word
+	public static String getFirstWord(String string){
+		return string.trim().split("\\s+")[0];
+	}
+	
+	//remove first word to get command details
+	public static String removeFirstWord(String string){
+		return string.replace(getFirstWord(string),"").trim();
+	}
+
+	/***************COMMANDS****************/
+	//choose command to execute
 	public void executeCommand(String commandLine) throws IOException{
 		Command cmd = new Command(getFirstWord(commandLine), removeFirstWord(commandLine));
 		switch(cmd.type){
@@ -84,18 +96,8 @@ public class TextBuddy{
 			this.searchItem(cmd.detail); break;
 		case "exit":
 			System.exit(0);
-		default: displayMsg("Command Error!");
+		default: displayMsg(MESSAGE_ERROR);
 		}
-	}
-	
-	//get first word: command word
-	public static String getFirstWord(String string){
-		return string.trim().split("\\s+")[0];
-	}
-	
-	//remove first word to get command details
-	public static String removeFirstWord(String string){
-		return string.replace(getFirstWord(string),"").trim();
 	}
 	
 	//execute command: add
@@ -126,7 +128,7 @@ public class TextBuddy{
 		displayMsg(MESSAGE_CLEAR + this.fileName);
 	}
 	
-	//execute command: delete
+	//execute command: delete one item of given number from the list
 	public void deleteItem(Integer lineNum) throws IOException{
 		File temp = new File("temp.txt");
 		try{
@@ -168,10 +170,12 @@ public class TextBuddy{
 		displayMsg(content + MESSAGE_DELETE + this.fileName);
 	}
 
+	//execute command: sort list with alphabetical order
 	public void sortList(){
 		//TODO
 	}
 
+	//execute command: search word and return lines containing the word
 	public void searchItem(String key){
 		//TODO
 	}
