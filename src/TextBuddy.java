@@ -78,7 +78,7 @@ public class TextBuddy{
 	}
 
 	//get items as arrayList
-	public static ArrayList<String> getList(File file, int numEntry) throws IOException{
+	public ArrayList<String> getList(File file, int numEntry) throws IOException{
 		ArrayList<String> items = new ArrayList<String>();
 		BufferedReader br = new BufferedReader(new FileReader(file));
 		int count = 0;
@@ -97,8 +97,11 @@ public class TextBuddy{
 		case "add":
 			this.addItem(cmd.detail); this.numEntry++; break;
 		case "display":
-			if(this.numEntry == 0){displayMsg(this.fileName + MESSAGE_EMPTY);}
-			this.displayList();
+			if(this.numEntry == 0){
+				displayMsg(this.fileName + MESSAGE_EMPTY);
+			} else {
+				this.displayList();
+			}
 			break;
 		case "clear":
 			this.clearList(); this.numEntry = 0; break;
@@ -134,10 +137,13 @@ public class TextBuddy{
 //		br.close();
 //	}
 	public void displayList() throws IOException{
-		ArrayList<String> list = getList(this.file, this.numEntry);
+		displayMsg("create list");
+		ArrayList<String> list = new ArrayList<String>(this.getList(this.file, this.numEntry));
 		int count = 0;
+		displayMsg("displaying list");
 		while(count < this.numEntry){
-			displayMsg(count+1 + list.get(++count));
+			displayMsg("showing item");
+			displayMsg(count+1 + ". " + list.get(++count));
 		}
 	}
 	

@@ -22,6 +22,7 @@ public class TextBuddyTest {
 		assertEquals(3, tester.numEntry);
 		
 		//get arraylist of items
+		
 	}
 
 }
