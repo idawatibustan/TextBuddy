@@ -1,5 +1,7 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -75,6 +77,18 @@ public class TextBuddy{
 		return string.replace(getFirstWord(string),"").trim();
 	}
 
+	//get items as arrayList
+	public static ArrayList<String> getList(File file, int numEntry) throws IOException{
+		ArrayList<String> items = new ArrayList<String>();
+		BufferedReader br = new BufferedReader(new FileReader(file));
+		int count = 0;
+		while(count < numEntry){
+				items.add(br.readLine());
+		}
+		br.close();
+		return items;
+	}
+	
 	/***************COMMANDS****************/
 	//choose command to execute
 	public void executeCommand(String commandLine) throws IOException{
@@ -110,15 +124,23 @@ public class TextBuddy{
 	}
 	
 	//execute command: display numbered list of items
+//	public void displayList() throws IOException{
+//		int count = 0;
+//		BufferedReader br = new BufferedReader(new FileReader(this.file));
+//		while(count != this.numEntry){
+//			String line = new String(br.readLine());
+//			displayMsg(++count + ". " + line);
+//		}
+//		br.close();
+//	}
 	public void displayList() throws IOException{
+		ArrayList<String> list = getList(this.file, this.numEntry);
 		int count = 0;
-		BufferedReader br = new BufferedReader(new FileReader(this.file));
-		while(count != this.numEntry){
-			String line = new String(br.readLine());
-			displayMsg(++count + ". " + line);
+		while(count < this.numEntry){
+			displayMsg(count+1 + list.get(++count));
 		}
-		br.close();
 	}
+	
 	
 	//execute command: clear all items in the list
 	public void clearList() throws IOException{
