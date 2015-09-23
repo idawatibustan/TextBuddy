@@ -18,23 +18,35 @@ public class TextBuddyTest {
 		//create list of items
 		assertEquals(0, tester.numEntry);
 		tester.executeCommand("add Potato");
-		assertEquals(1, tester.numEntry);
 		tester.executeCommand("add Brocolli");
-		assertEquals(2, tester.numEntry);
+		tester.executeCommand("add Fries");
 		tester.executeCommand("add French Fries");
+		tester.executeCommand("add Curly Fries");
 		assertEquals(3, tester.numEntry);
 		
 		tester.displayList();
 		//get arraylist of items
 		ArrayList<String> list = new ArrayList<String>();
-		list.add("Potato"); list.add("Brocolli"); list.add("French Fries");
+		list.add("Potato");
+		list.add("Brocolli");
+		list.add("Fries");
+		list.add("French Fries");
+		list.add("Curly Fries");
 		assertEquals(list, tester.getList());
 		
 		tester.sortList(); //sort
 		
 		tester.displayList();
-		list.clear(); list.add("Brocolli"); list.add("French Fries"); list.add("Potato");
+		//sorted list
+		list.clear();
+		list.add("Brocolli");
+		list.add("Curly Fries");
+		list.add("French Fries");
+		list.add("Fries");
+		list.add("Potato");
 		assertEquals(list, tester.getList());
+		
+		assertEquals("2. Curly Fries\n3. French Fries\n4. Fries\n"), tester.searchItem("Fries"));
 	}
 
 }
