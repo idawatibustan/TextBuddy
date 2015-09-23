@@ -22,7 +22,7 @@ public class TextBuddyTest {
 		tester.executeCommand("add Fries");
 		tester.executeCommand("add French Fries");
 		tester.executeCommand("add Curly Fries");
-		assertEquals(3, tester.numEntry);
+		assertEquals(5, tester.numEntry);
 		
 		tester.displayList();
 		//get arraylist of items
@@ -46,7 +46,7 @@ public class TextBuddyTest {
 		list.add("Potato");
 		assertEquals(list, tester.getList());
 		
-		assertEquals("2. Curly Fries\n3. French Fries\n4. Fries\n"), tester.searchItem("Fries"));
+		assertEquals("2. Curly Fries\n3. French Fries\n4. Fries\n", tester.searchItem("Fries"));
 	}
 
 }

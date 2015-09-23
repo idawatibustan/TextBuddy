@@ -176,11 +176,16 @@ public class TextBuddy{
 	}
 
 	//execute command: search word and return lines containing the word
-	public String searchItem(String key){
-		String srchResult = new String();
+	public String searchItem(String key) throws IOException{
+		String srchResult = new String("");
 		ArrayList<String> list = new ArrayList<String>(this.getList());
-		
-
+		int count = 0;
+		while (count < this.numEntry){
+			if(list.get(count).contains(key)){
+				srchResult = srchResult.concat(count+1 + ". "+ list.get(count) + "\n");
+			}
+			count++;
+		}
 		return srchResult;
 	}
 }
