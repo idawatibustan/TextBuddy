@@ -122,7 +122,7 @@ public class TextBuddy{
 			this.clearList(); this.numEntry = 0;
 			displayMsg(MESSAGE_CLEAR + this.fileName); break;
 		case "delete":
-			this.deleteItem(Integer.valueOf(cmd.detail)); this.numEntry--; break;
+			this.deleteItem(Integer.valueOf(cmd.detail)); break;
 		case "sort":
 			this.sortList();
 			displayMsg(this.fileName + MESSAGE_SORTED); break;
@@ -162,8 +162,10 @@ public class TextBuddy{
 	
 	//execute command: delete one item of given number from the list
 	public void deleteItem(Integer lineNum) throws IOException{
-		ArrayList<String> list = this.getList();
+		ArrayList<String> list = new ArrayList<String>(this.getList());
+		displayMsg(list.get(lineNum-1) + MESSAGE_DELETE + this.fileName);
 		list.remove(lineNum-1);
+		this.numEntry--;
 		this.storeListToFile(list);
 	}
 	
