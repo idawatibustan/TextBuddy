@@ -84,6 +84,7 @@ public class TextBuddy{
 		int count = 0;
 		while(count < numEntry){
 				items.add(br.readLine());
+				count++;
 		}
 		br.close();
 		return items;
@@ -126,24 +127,12 @@ public class TextBuddy{
 		displayMsg("added to " + this.fileName + ": \"" + content + "\"");
 	}
 	
-	//execute command: display numbered list of items
-//	public void displayList() throws IOException{
-//		int count = 0;
-//		BufferedReader br = new BufferedReader(new FileReader(this.file));
-//		while(count != this.numEntry){
-//			String line = new String(br.readLine());
-//			displayMsg(++count + ". " + line);
-//		}
-//		br.close();
-//	}
 	public void displayList() throws IOException{
-		displayMsg("create list");
 		ArrayList<String> list = new ArrayList<String>(this.getList(this.file, this.numEntry));
 		int count = 0;
-		displayMsg("displaying list");
 		while(count < this.numEntry){
-			displayMsg("showing item");
-			displayMsg(count+1 + ". " + list.get(++count));
+			displayMsg(count+1 + ". " + list.get(count));
+			count++;
 		}
 	}
 	
