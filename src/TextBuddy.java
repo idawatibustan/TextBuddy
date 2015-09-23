@@ -1,7 +1,7 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -47,6 +47,7 @@ public class TextBuddy{
 	public static final String MESSAGE_CLEAR = "all content deleted from ";
 	public static final String MESSAGE_EMPTY = " is empty";
 	public static final String MESSAGE_ERROR = "Command Error!";
+	public static final String MESSAGE_SORTED = " is sorted!";
 	
 	//scanner
 	private static Scanner sc = new Scanner(System.in);
@@ -78,16 +79,31 @@ public class TextBuddy{
 	}
 
 	//get items as arrayList
-	public ArrayList<String> getList(File file, int numEntry) throws IOException{
+	public ArrayList<String> getList() throws IOException{
 		ArrayList<String> items = new ArrayList<String>();
-		BufferedReader br = new BufferedReader(new FileReader(file));
+		BufferedReader br = new BufferedReader(new FileReader(this.file));
 		int count = 0;
-		while(count < numEntry){
+		while(count < this.numEntry){
 				items.add(br.readLine());
 				count++;
 		}
 		br.close();
 		return items;
+	}
+	
+	//store items in list into the file
+	public void storeListToFile(ArrayList<String> list) throws IOException{
+		FileWriter fw = new FileWriter(this.file, false);
+		fw.write("");
+		fw.close();
+		
+		fw = new FileWriter(this.file, true);
+		int count = 0;
+		while(count < this.numEntry){
+			fw.write(list.get(count++));
+			fw.write(System.lineSeparator());
+		}
+		fw.close();
 	}
 	
 	/***************COMMANDS****************/
@@ -109,7 +125,8 @@ public class TextBuddy{
 		case "delete":
 			this.deleteItem(Integer.valueOf(cmd.detail)); this.numEntry--; break;
 		case "sort":
-			this.sortList(); break;
+			this.sortList();
+			displayMsg(this.fileName + MESSAGE_SORTED); break;
 		case "search":
 			this.searchItem(cmd.detail); break;
 		case "exit":
@@ -118,7 +135,7 @@ public class TextBuddy{
 		}
 	}
 	
-	//execute command: add
+	//execute command: add one item to list
 	public void addItem(String content) throws IOException{
 		FileWriter fw = new FileWriter(this.file, true);
 		fw.write(content);
@@ -127,8 +144,9 @@ public class TextBuddy{
 		displayMsg("added to " + this.fileName + ": \"" + content + "\"");
 	}
 	
+	//execute command: display items on list
 	public void displayList() throws IOException{
-		ArrayList<String> list = new ArrayList<String>(this.getList(this.file, this.numEntry));
+		ArrayList<String> list = new ArrayList<String>(this.getList());
 		int count = 0;
 		while(count < this.numEntry){
 			displayMsg(count+1 + ". " + list.get(count));
@@ -147,49 +165,17 @@ public class TextBuddy{
 	
 	//execute command: delete one item of given number from the list
 	public void deleteItem(Integer lineNum) throws IOException{
-		File temp = new File("temp.txt");
-		try{
-			if(!temp.exists()){
-				temp.createNewFile();
-			}
-		} catch (IOException e){
-			e.printStackTrace();
-		}
-		
-		BufferedReader br = new BufferedReader(new FileReader(this.file));
-		FileWriter fw = new FileWriter(temp, true);
-		
-		String content = new String();
-		String tempContent = new String();
-		int count = 1;
-		while(count <= this.numEntry){
-			tempContent = br.readLine();
-			if(count != lineNum){
-				fw.write(tempContent);
-				fw.write(System.lineSeparator());
-			} else {
-				content = tempContent;
-			}
-			count++;
-		}		
-		br.close();
-		fw.close();
-
-		//delete current file
-		if(!this.file.delete()){
-			displayMsg("Could not delete existing file");
-		}
-		
-		//change temp to current file
-		if(!temp.renameTo(this.file)){
-			displayMsg("Could not rename temp file");
-		}	
-		displayMsg(content + MESSAGE_DELETE + this.fileName);
+		ArrayList<String> list = this.getList();
+		list.remove(lineNum-1);
+		this.storeListToFile(list);
 	}
-
+	
 	//execute command: sort list with alphabetical order
-	public void sortList(){
-		//TODO
+	public void sortList() throws IOException{
+		ArrayList<String> list = this.getList();
+		Collections.sort(list);
+		this.storeListToFile(list
+				);
 	}
 
 	//execute command: search word and return lines containing the word
