@@ -47,6 +47,8 @@ public class TextBuddyTest {
 		assertEquals(list, tester.getList());
 		
 		assertEquals("2. Curly Fries\n3. French Fries\n4. Fries\n", tester.searchItem("Fries"));
+		assertEquals("2. Curly Fries\n3. French Fries\n4. Fries\n", tester.searchItem("FRIES"));
+		assertEquals("2. Curly Fries\n", tester.searchItem("cuRLy fRi"));
 	}
 
 }

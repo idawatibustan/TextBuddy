@@ -181,10 +181,14 @@ public class TextBuddy{
 		ArrayList<String> list = new ArrayList<String>(this.getList());
 		int count = 0;
 		while (count < this.numEntry){
-			if(list.get(count).contains(key)){
+			if(list.get(count).toLowerCase().contains(key.toLowerCase())){
 				srchResult = srchResult.concat(count+1 + ". "+ list.get(count) + "\n");
 			}
 			count++;
+		}
+		
+		if(srchResult.equals("")){
+			return "No match found";
 		}
 		return srchResult;
 	}
