@@ -13,6 +13,8 @@ public class TextBuddyTest {
 		//TextBuddy is tested
 		TextBuddy tester = new TextBuddy("text.txt");
 		
+		tester.clearList();
+		
 		//create list of items
 		assertEquals(0, tester.numEntry);
 		tester.executeCommand("add Potato");
@@ -22,13 +24,15 @@ public class TextBuddyTest {
 		tester.executeCommand("add French Fries");
 		assertEquals(3, tester.numEntry);
 		
+		tester.displayList();
 		//get arraylist of items
 		ArrayList<String> list = new ArrayList<String>();
 		list.add("Potato"); list.add("Brocolli"); list.add("French Fries");
 		assertEquals(list, tester.getList());
 		
-		tester.sortList();
+		tester.sortList(); //sort
 		
+		tester.displayList();
 		list.clear(); list.add("Brocolli"); list.add("French Fries"); list.add("Potato");
 		assertEquals(list, tester.getList());
 	}

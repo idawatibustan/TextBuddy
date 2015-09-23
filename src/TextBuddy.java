@@ -54,7 +54,7 @@ public class TextBuddy{
 	
 	public static void main(String[] args) throws IOException {
 		TextBuddy tb = new TextBuddy(args[0]);
-		tb.executeCommand("clear");
+		tb.clearList();
 		displayMsg(MESSAGE_WELCOME + tb.fileName + MESSAGE_FILE_READY);
 		
 		while(true){
@@ -93,11 +93,9 @@ public class TextBuddy{
 	
 	//store items in list into the file
 	public void storeListToFile(ArrayList<String> list) throws IOException{
-		FileWriter fw = new FileWriter(this.file, false);
-		fw.write("");
-		fw.close();
+		this.clearList();
 		
-		fw = new FileWriter(this.file, true);
+		FileWriter fw = new FileWriter(this.file, true);
 		int count = 0;
 		while(count < this.numEntry){
 			fw.write(list.get(count++));
@@ -121,14 +119,15 @@ public class TextBuddy{
 			}
 			break;
 		case "clear":
-			this.clearList(); this.numEntry = 0; break;
+			this.clearList(); this.numEntry = 0;
+			displayMsg(MESSAGE_CLEAR + this.fileName); break;
 		case "delete":
 			this.deleteItem(Integer.valueOf(cmd.detail)); this.numEntry--; break;
 		case "sort":
 			this.sortList();
 			displayMsg(this.fileName + MESSAGE_SORTED); break;
 		case "search":
-			this.searchItem(cmd.detail); break;
+			displayMsg(this.searchItem(cmd.detail)); break;
 		case "exit":
 			System.exit(0);
 		default: displayMsg(MESSAGE_ERROR);
@@ -154,13 +153,11 @@ public class TextBuddy{
 		}
 	}
 	
-	
 	//execute command: clear all items in the list
 	public void clearList() throws IOException{
 		FileWriter fw = new FileWriter(this.file, false);
 		fw.write("");
 		fw.close();
-		displayMsg(MESSAGE_CLEAR + this.fileName);
 	}
 	
 	//execute command: delete one item of given number from the list
@@ -179,7 +176,11 @@ public class TextBuddy{
 	}
 
 	//execute command: search word and return lines containing the word
-	public void searchItem(String key){
-		//TODO
+	public String searchItem(String key){
+		String srchResult = new String();
+		ArrayList<String> list = new ArrayList<String>(this.getList());
+		
+
+		return srchResult;
 	}
 }
